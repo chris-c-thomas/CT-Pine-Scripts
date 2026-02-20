@@ -25,4 +25,4 @@ A high-precision scalping indicator for zero-days-to-expiration SPY options. Fea
 
 ## License
 
-Apache License 2.0
+[MIT](LICENSE)
