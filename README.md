@@ -202,43 +202,25 @@ See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
 
 ## Roadmap
 
-The following categories represent planned additions to the toolkit. Items are roughly ordered by priority within each category, but development order may shift based on what's most useful in practice.
+Planned additions to the toolkit, roughly ordered by priority. Development order may shift based on what's most useful in practice.
 
-### Market Internals Dashboard
+- [ ] **Market Internals Dashboard** -- Standalone lower-pane indicator consolidating NYSE TICK, ADD (advance-decline), VOLD (up/down volume), and VIX term structure into a single "market health" view. Reduces redundant `request.security()` calls across instances and answers whether broad market breadth is confirming or diverging from SPY price action.
 
-A dedicated lower-pane or overlay indicator consolidating real-time breadth and internals data into a single view. Planned components include NYSE TICK (already integrated per-indicator, but a standalone composite would reduce redundant `request.security()` calls across instances), NYSE ADD (advance-decline), VOLD (up-volume vs. down-volume), and VIX term structure slope. The goal is a single "market health" indicator that answers whether the broad market is confirming or diverging from SPY price action.
+- [ ] **Volume Profile Approximation** -- Price-binned volume accumulation over configurable lookback windows to approximate POC (point of control), VAH/VAL (value area high/low), and high-volume node detection. These levels are among the most actionable for 0DTE entries and would complement existing VWAP and prior-day level infrastructure.
 
-### Volume Profile Approximation
+- [ ] **QQQ / IWM 0DTE Scalper Variants** -- Adapt the SPY 0DTE Scalper architecture to QQQ and IWM. Not a parameter tweak — each instrument needs independent calibration of EMA lengths, VWAP extension thresholds, RSI ranges, signal engine weights, and TICK symbol mapping (NYSE TICK vs. NASDAQ TICK).
 
-Pine Script cannot access TradingView's native volume profile data, but an approximation using price-binned volume accumulation over configurable lookback windows is feasible. Targeted outputs: POC (point of control), VAH/VAL (value area high/low), and high-volume node detection. These levels are among the most actionable for 0DTE entries and would complement the existing VWAP and prior-day level infrastructure.
+- [ ] **Strategy Backtest Conversions** -- Convert `indicator()` scripts to `strategy()` equivalents with entry/exit rules, position sizing, stop-loss/take-profit logic, and commission modeling for TradingView's strategy tester. Primary challenge: codifying exit logic (currently trader discretion) into deterministic rules without overfitting.
 
-### QQQ / IWM 0DTE Scalper Variants
+- [ ] **Session Statistics Overlay** -- Companion overlay for end-of-day and intra-session performance stats: signal count, win rate (requires strategy conversion or manual tracking hooks), average bars held, R-multiple distribution, time-of-day signal density, and regime breakdown.
 
-Adapt the SPY 0DTE Scalper architecture to QQQ and IWM, which have meaningfully different volatility profiles, ATR ranges, and microstructure characteristics. This is not a parameter tweak -- each instrument needs independent calibration of EMA lengths, VWAP extension thresholds, RSI ranges, and signal engine weights. TICK symbol mapping (NYSE TICK vs. NASDAQ TICK) also differs.
+- [ ] **Options-Aware Enhancements** -- Indicators accounting for options-specific dynamics: expected move range (from VIX or ATM straddle pricing), gamma exposure level estimation, and time-decay-aware signal filtering that adjusts aggressiveness based on remaining session time (aggressive early, conservative into close as theta accelerates on 0DTE contracts).
 
-### Strategy Backtest Conversions
+- [ ] **Mean Reversion / Fade Signals** -- Complementary mean-reversion indicator targeting overextended moves: Bollinger Band extremes, RSI divergence, VWAP band rejection, and z-score deviation from intraday TWAP. Particularly useful during RANGING regime when trend-following signals are suppressed.
 
-Convert existing `indicator()` scripts to `strategy()` equivalents with defined entry/exit rules, position sizing, stop-loss/take-profit logic, and commission modeling. This enables TradingView's strategy tester for historical performance evaluation. The primary challenge is codifying exit logic (currently left to trader discretion) into deterministic rules without overfitting.
+- [ ] **Multi-Asset Correlation Monitor** -- Real-time correlation and divergence tracking across related instruments (SPY/QQQ, SPY/IWM, SPY/VIX, 10Y yield/equities). Alerts on correlation breakdowns signaling rotation, risk-off events, or tradable divergence setups.
 
-### Session Statistics Overlay
-
-End-of-day and intra-session performance statistics: signal count, win rate (requires strategy conversion or manual tracking hooks), average bars held, R-multiple distribution, time-of-day signal density, and regime breakdown. Designed as a companion overlay that reads signal data from the scalper indicators.
-
-### Options-Aware Enhancements
-
-Indicators that account for options-specific dynamics beyond directional bias. Candidates include expected move range (derived from VIX or ATM straddle pricing), gamma exposure level estimation, and time-decay-aware signal filtering that adjusts aggressiveness based on remaining session time (aggressive early, conservative into close as theta accelerates on 0DTE contracts).
-
-### Mean Reversion / Fade Signals
-
-The current suite is trend-following by design. A complementary mean-reversion indicator would target overextended moves for fade entries: Bollinger Band extremes, RSI divergence, VWAP band rejection, and z-score-based deviation from intraday TWAP. Particularly useful during RANGING regime classification when trend-following signals are suppressed.
-
-### Multi-Asset Correlation Monitor
-
-Real-time correlation and divergence tracking across related instruments (SPY vs. QQQ, SPY vs. IWM, SPY vs. VIX, 10Y yield vs. equity indices). Alerts on correlation breakdowns that may signal rotation, risk-off events, or tradable divergence setups. Would extend the Market Monitor concept from single-instrument bias to cross-asset regime awareness.
-
-### Alert Pipeline Templates
-
-Pre-built webhook payload templates and companion integration guides for routing TradingView alerts to external systems (Discord, Telegram, Slack, custom APIs). Includes JSON payload formatting, conditional routing logic, and documentation for connecting to downstream automation or logging infrastructure.
+- [ ] **Alert Pipeline Templates** -- Pre-built webhook payload templates and integration guides for routing TradingView alerts to external systems (Discord, Telegram, Slack, custom APIs). Includes JSON payload formatting, conditional routing logic, and downstream automation documentation.
 
 ---
 
