@@ -22,12 +22,12 @@ Each timeframe variant is independently calibrated. The signal engine approach d
 
 | Script | Timeframe | Version | Signal Engine | Hold Time | Docs |
 | ------ | --------- | ------- | ------------- | --------- | ---- |
-| `spy_0dte_scalper_1min_v1_0.pine` | 1-min | v1.0 | AND-gate | 1-5 min | [docs](docs/spy_0dte_scalper_1min_v1.0.md) |
-| `spy_0dte_scalper_1min_v1_1.pine` | 1-min | v1.1 | AND-gate + optional filters | 1-5 min | [docs](docs/spy_0dte_scalper_1min_v1.1.md) |
-| `spy_0dte_scalper_5min_v1_0.pine` | 5-min | v1.0 | 5+2 scoring | 5-25 min | [docs](docs/spy_0dte_scalper_5min_v1.0.md) |
-| `spy_0dte_scalper_5min_v1_1.pine` | 5-min | v1.1 | 5+4 scoring | 5-25 min | [docs](docs/spy_0dte_scalper_5min_v1.1.md) |
-| `spy_0dte_scalper_15min_v1_0.pine` | 15-min | v1.0 | Scoring + bias | 15-60 min | [docs](docs/spy_0dte_scalper_15min_v1_0.md) |
-| `spy_0dte_scalper_15min_v1_1.pine` | 15-min | v1.1 | Scoring + bias | 15-60 min | [docs](docs/spy_0dte_scalper_15min_v1_1.md) |
+| [spy_0dte_scalper_1min_v1.0.pine](spy_0dte_scalper/spy_0dte_scalper_1min_v1.0.pine) | 1-min | v1.0 | AND-gate | 1-5 min | [docs](docs/spy_0dte_scalper_1min_v1.0.md) |
+| [spy_0dte_scalper_1min_v1.1.pine](spy_0dte_scalper/spy_0dte_scalper_1min_v1.1.pine) | 1-min | v1.1 | AND-gate + optional filters | 1-5 min | [docs](docs/spy_0dte_scalper_1min_v1.1.md) |
+| [spy_0dte_scalper_5min_v1.0.pine](spy_0dte_scalper/spy_0dte_scalper_5min_v1.0.pine) | 5-min | v1.0 | 5+2 scoring | 5-25 min | [docs](docs/spy_0dte_scalper_5min_v1.0.md) |
+| [spy_0dte_scalper_5min_v1.1.pine](spy_0dte_scalper/spy_0dte_scalper_5min_v1.1.pine) | 5-min | v1.1 | 5+4 scoring | 5-25 min | [docs](docs/spy_0dte_scalper_5min_v1.1.md) |
+| [spy_0dte_scalper_15min_v1_0.pine](spy_0dte_scalper/spy_0dte_scalper_15min_v1_0.pine) | 15-min | v1.0 | Scoring + bias | 15-60 min | [docs](docs/spy_0dte_scalper_15min_v1_0.md) |
+| [spy_0dte_scalper_15min_v1_1.pine](spy_0dte_scalper/spy_0dte_scalper_15min_v1_1.pine) | 15-min | v1.1 | Scoring + bias | 15-60 min | [docs](docs/spy_0dte_scalper_15min_v1_1.md) |
 
 ### Market Monitor
 
