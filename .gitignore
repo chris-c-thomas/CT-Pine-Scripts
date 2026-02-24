@@ -1,0 +1,68 @@
+# =============================================================================
+# ALWAYS IGNORED
+# OS artifacts, editor internals, logs, and temp files that should not be committed.
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Swap
+*.swp
+*.swo
+.#*
+
+# Logs
+*.log
+logs/
+
+# Temp / Backup
+*.tmp
+*.bak
+*.orig
+
+
+# =============================================================================
+# OPTIONALLY IGNORED
+# User-local tooling configs that are personal and not part of the project.
+#
+# Remove a line below (or use `git add -f`) to commit a specific file
+# intentionally.
+# =============================================================================
+
+# IDE / Workspace
+.vscode/
+*.code-workspace
+.idea/
+
+# AI 
+.github/copilot-instructions.md
+.copilot/
+.cursor/
+.cursorignore
+.cursorules
+.aider*
+.continue/
+.codeium/
+
+# User AI prompt/instruction files
+*.prompt.md
+*.instructions.md
+
+# MCP
+.mcp.json
+mcp.json
+mcp-settings.json
+.mcp/
+
+
