@@ -37,7 +37,7 @@ This is not a signal generator. It answers one question: "which way is the wind 
 
 | Script | Version | Docs |
 | ------ | ------- | ---- |
-| `market_monitor_v1_0.pine` | v1.0 | [docs](docs/market_monitor_v1_0.md) |
+| [market_monitor_v1_0.pine](market_monitor/market_monitor_v1_0.pine) | v1.0 | [docs](docs/market_monitor_v1_0.md) |
 
 ---
 
