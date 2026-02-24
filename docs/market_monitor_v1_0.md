@@ -46,6 +46,7 @@ Five binary conditions scored +1 (bullish) or -1 (bearish), producing a composit
 | 5 | HTF Confirmation | Price above higher-TF slow EMA | Price below higher-TF slow EMA |
 
 **Interpretation**:
+
 - +3 to +5: Strong bullish bias — look for long setups on pullbacks
 - +1 to +2: Lean bullish — trend present but not overwhelming
 - 0: Neutral / choppy — avoid directional bias
@@ -72,6 +73,7 @@ This prevents getting caught in micro-timeframe noise when the higher structure 
 ### Relative Volume
 
 Current bar volume divided by the 20-period SMA of volume. Thresholds:
+
 - **>2.0x**: SPIKE (green) — institutional activity likely
 - **>1.2x**: ABOVE average (yellow)
 - **<1.2x**: BELOW average (gray)
