@@ -4,6 +4,26 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## v1.0 (2026-02-27) -- Market Monitor 5m
+
+- New 5-minute optimized Market Monitor variant with weighted directional bias scoring.
+- Weighted scoring engine: structural conditions (EMA alignment, VWAP position, Anchor EMA) score 2x; confirmation conditions (RSI, DI, HTF, TICK, Squeeze momentum) score 1x. Configurable toggle between weighted and equal modes.
+- Bias score range expanded to +/-11 (weighted) or +/-8 (equal) vs the general-purpose monitor's +/-5.
+- Session phase detection: Open Drive / Morning / Midday / Power Hour / Close classification based on Eastern Time.
+- TTM Squeeze integration with BB/KC compression detection, three-state classification, momentum direction, and bars-since-fired tracking.
+- NYSE TICK Index integration with six-tier breadth classification and configurable thresholds.
+- ATR regime classification via percentile ranking (LOW / NORMAL / HIGH / EXTREME) over configurable lookback.
+- Prior Day VWAP latched from previous session close and plotted as reference level.
+- 15-minute Anchor EMA (50 EMA) plotted as institutional trend reference line.
+- Opening Range levels with configurable duration (default 15 min / 3 bars on 5m).
+- Session HOD/LOD real-time tracking with dashboard position context.
+- Bias trend tracking (IMPROVING / STABLE / FADING) via 3-bar SMA comparison.
+- Expanded 18-row dashboard with session phase, squeeze state, TICK readings, OR position, and session context.
+- 9 alert conditions including squeeze fired, TICK extremes, and adaptive strong bias thresholds.
+- 4 `request.security` calls total — within headroom for 8+ simultaneous instances.
+
+---
+
 ## v1.1 (2026-02-20) -- All Scalper Variants
 
 - TTM Squeeze detection with three-state classification and momentum histogram.

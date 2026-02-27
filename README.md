@@ -11,7 +11,7 @@ Pine Script Documentation:
 
 This repository is an evolving toolkit for systematic intraday trading on TradingView. The current focus is SPY 0DTE options scalping and multi-chart directional bias monitoring, with plans to expand into broader market internals, multi-asset strategies, and backtesting frameworks.
 
-Currently, the suite includes a family of SPY 0DTE Scalper indicators spanning three timeframes (1-minute, 5-minute, 15-minute), each independently calibrated for its target holding period, plus a general-purpose Market Monitor for watchlist reconnaissance. All indicators share a common architectural foundation: EMA ribbon overlays, session-anchored VWAP with deviation bands, regime classification, and real-time dashboards with color-coded status fields. They diverge in signal generation approach, parameter calibration, and feature depth based on the characteristics of their target timeframe.
+Currently, the suite includes a family of SPY 0DTE Scalper indicators spanning three timeframes (1-minute, 5-minute, 15-minute), each independently calibrated for its target holding period, plus a general-purpose Market Monitor and a 5-minute optimized Market Monitor for watchlist reconnaissance. All indicators share a common architectural foundation: EMA ribbon overlays, session-anchored VWAP with deviation bands, regime classification, and real-time dashboards with color-coded status fields. They diverge in signal generation approach, parameter calibration, and feature depth based on the characteristics of their target timeframe.
 
 ## Indicators
 
@@ -32,13 +32,35 @@ Each timeframe variant is independently calibrated. The signal engine approach d
 
 ### Market Monitor
 
-A directional bias overlay designed for multi-chart watchlist monitoring. Combines EMA ribbon, VWAP bands, RSI, ADX/DMI, higher-timeframe EMA confirmation, and relative volume into a composite bias score (-5 to +5) displayed in a compact dashboard. Optimized for running 6-8 instances simultaneously on small chart tiles.
+Directional bias overlays designed for multi-chart watchlist monitoring. These are not signal generators. They answer one question: "which way is the wind blowing?" Use them for reconnaissance across a watchlist, then drill into the 0DTE Scalper on whichever charts show strong directional bias.
 
-This is not a signal generator. It answers one question: "which way is the wind blowing?" Use it for reconnaissance across a watchlist, then drill into the 0DTE Scalper on whichever charts show strong directional bias.
+The **general-purpose** variant is timeframe-adaptive (1m through Daily) with a simple equal-weighted bias score. The **5-minute optimized** variant adds weighted scoring, session awareness, market breadth (NYSE TICK), volatility compression detection (TTM Squeeze), ATR regime classification, and expanded reference levels for intraday monitoring workflows.
 
-| Script | Version | Docs |
-| ------ | ------- | ---- |
-| [market_monitor_v1_0.pine](market_monitor/market_monitor_v1_0.pine) | v1.0 | [docs](docs/market_monitor_v1_0.md) |
+| Script | Variant | Version | Bias Score Range | Dashboard Rows | Docs |
+| ------ | ------- | ------- | ---------------- | -------------- | ---- |
+| [market_monitor_v1_0.pine](market_monitor/market_monitor_v1_0.pine) | General Purpose | v1.0 | -5 to +5 (equal) | 12 | [docs](docs/market_monitor_v1_0.md) |
+| [market_monitor_5min_v1_0.pine](market_monitor/market_monitor_5min_v1_0.pine) | 5-Minute Optimized | v1.0 | -11 to +11 (weighted) | 18 | [docs](docs/market_monitor_5min_v1_0.md) |
+
+#### Market Monitor Comparison
+
+| Feature | General Purpose (v1.0) | 5-Minute Optimized (v1.0) |
+| ------- | --------------------- | ------------------------- |
+| Target timeframe | Adaptive (1m - Daily) | 5-minute (primary) |
+| Scoring mode | Equal weight (all 1x) | Structural 2x / Confirmation 1x |
+| Bias score range | -5 to +5 | -11 to +11 (weighted), -8 to +8 (equal) |
+| Session phases | None | Open Drive / Morning / Midday / Power Hour / Close |
+| NYSE TICK | Not included | 6-tier classification, bias contribution |
+| TTM Squeeze | Not included | BB/KC compression with momentum direction |
+| ATR regime | Raw value only | Percentile-ranked (LOW / NORMAL / HIGH / EXTREME) |
+| Opening Range | Not included | Configurable duration (default 15 min) |
+| Session HOD/LOD | Not included | Real-time tracking with dashboard context |
+| Prior Day VWAP | Not included | Latched from previous session close |
+| Anchor EMA | Not included | 15m 50 EMA plotted on chart |
+| Bias trend | Not tracked | IMPROVING / STABLE / FADING |
+| HTF mapping | Auto-adaptive | Fixed to 15m |
+| `request.security` calls | 3 | 4 |
+| Dashboard rows | 12 | 18 |
+| Alert conditions | 6 | 9 |
 
 ## Timeframe Comparison
 
@@ -77,7 +99,7 @@ Every indicator in the suite shares these foundational components, calibrated pe
 
 **Alert System** -- Dual implementation: static `alertcondition()` for TradingView's standard alert UI, plus dynamic `alert()` with interpolated context for webhook and notification pipelines.
 
-### v1.1 Additions (All Timeframes)
+### v1.1 Additions (All Scalper Timeframes)
 
 **TTM Squeeze** -- Bollinger Band (20, 2.0) compression inside Keltner Channels (20, 1.5). Three states: SQUEEZE ON (compression building), FIRED (breakout beginning), OFF (normal volatility). Momentum histogram via linear regression.
 
@@ -112,7 +134,7 @@ detects sessions, calculates levels, or generates signals.
 
 ### Data Requirements
 
-**NYSE TICK** (v1.1 only): The TICK index (`USI:TICK`) requires your TradingView data plan to include the relevant exchange. If unavailable, TICK rows show "N/A" and TICK-based signal conditions pass through without blocking (1-min) or simply don't contribute score (5-min, 15-min).
+**NYSE TICK** (v1.1 scalpers and Market Monitor 5m): The TICK index (`USI:TICK`) requires your TradingView data plan to include the relevant exchange. If unavailable, TICK rows show "N/A" and TICK-based signal conditions pass through without blocking (1-min) or simply don't contribute score (5-min, 15-min, Market Monitor 5m).
 
 ## Recommended Layouts
 
@@ -126,20 +148,22 @@ Run 2-3 SPY 0DTE Scalper variants side-by-side (e.g., 1-min + 5-min, or 5-min + 
 
 ### Watchlist Reconnaissance
 
-Run 6-8 Market Monitor instances on small chart tiles across your watchlist. Use Tiny or Small dashboard size with Top Right positioning. Identify which tickers show strong directional bias (score >= +3 or <= -3), then open a dedicated chart with the appropriate 0DTE Scalper for signal generation.
+Run 6-8 Market Monitor instances on small chart tiles across your watchlist. Use Tiny or Small dashboard size with Top Right or Bottom Right positioning. Identify which tickers show strong directional bias, then open a dedicated chart with the appropriate 0DTE Scalper for signal generation.
+
+For 5-minute focused monitoring, use the Market Monitor 5m variant — it provides richer context (session phase, squeeze state, TICK breadth, ATR regime, opening range position) at the cost of being optimized for a single timeframe. For timeframe-flexible watchlists spanning 1m through Daily, use the general-purpose Market Monitor.
 
 ## Performance and Limits
 
 All indicators are optimized for simultaneous multi-instance execution on TradingView.
 
-| Resource | Pine Script v6 Limit | Typical Usage (per instance) |
-| -------- | -------------------- | ---------------------------- |
-| `request.security()` calls | 40 per script | 4-5 (scalpers), 3 (monitor) |
-| Labels | 500 per script | ~50-100 per full session |
-| Lines | 500 per script | ~20-40 (level lines) |
-| Boxes | 200 per script | ~5-10 (opening range, clouds) |
+| Resource | Pine Script v6 Limit | Scalpers (per instance) | Monitor GP (per instance) | Monitor 5m (per instance) |
+| -------- | -------------------- | ----------------------- | ------------------------- | ------------------------- |
+| `request.security()` calls | 40 per script | 4-5 | 3 | 4 |
+| Labels | 500 per script | ~50-100 per session | 100 max | 200 max |
+| Lines | 500 per script | ~20-40 | 200 max | 300 max |
+| Boxes | 200 per script | ~5-10 | 50 max | 100 max |
 
-**Computation**: No loops, no arrays, no maps. Pure vectorized calculations with `var` declarations for persistent state. Dashboard tables update only on `barstate.islast` to minimize historical bar overhead.
+**Computation**: No loops except the Market Monitor 5m's ATR percentile ranking (configurable lookback, default 100 bars — lightweight). All other calculations are vectorized with `var` declarations for persistent state. Dashboard tables update only on `barstate.islast` to minimize historical bar overhead.
 
 **Repainting**: All signal logic is gated by `barstate.isconfirmed` by default. Signals appear after bar close, not during formation. `request.security()` calls use `lookahead=barmerge.lookahead_off` for all forward-looking data to prevent future data leakage. Prior day levels use `lookahead_on` which is appropriate for historical reference levels.
 
@@ -155,12 +179,16 @@ All indicators are optimized for simultaneous multi-instance execution on Tradin
 
 **Equal-weighted conditions (1-min).** The 1-minute AND-gate treats all conditions as binary pass/fail with no relative weighting. The 5-minute and 15-minute scoring models partially address this by allowing differential contribution.
 
+**Market Monitor 5m is timeframe-specific.** While it will technically run on other intraday timeframes, session phase detection, OR duration defaults, HTF mapping (fixed to 15m), and scoring parameters are calibrated for 5-minute bars. For other timeframes, use the general-purpose Market Monitor.
+
 ## Project Structure
 
 ```
 ├── README.md
+├── CHANGELOG.md
 ├── market_monitor/
-│   └── market_monitor_v1_0.pine
+│   ├── market_monitor_v1_0.pine
+│   └── market_monitor_5min_v1_0.pine
 ├── spy_0dte_scalper/
 │   ├── spy_0dte_scalper_1min_v1_0.pine
 │   ├── spy_0dte_scalper_1min_v1_1.pine
@@ -170,6 +198,7 @@ All indicators are optimized for simultaneous multi-instance execution on Tradin
 │   └── spy_0dte_scalper_15min_v1_1.pine
 └── docs/
     ├── market_monitor_v1_0.md
+    ├── market_monitor_5min_v1_0.md
     ├── spy_0dte_scalper_1min_v1.0.md
     ├── spy_0dte_scalper_1min_v1.1.md
     ├── spy_0dte_scalper_5min_v1.0.md
