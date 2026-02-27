@@ -38,7 +38,7 @@ The **general-purpose** variant is timeframe-adaptive (1m through Daily) with a 
 
 | Script | Variant | Version | Bias Score Range | Dashboard Rows | Docs |
 | ------ | ------- | ------- | ---------------- | -------------- | ---- |
-| [market_monitor_v1_0.pine](market_monitor/market_monitor_v1_0.pine) | General Purpose | v1.0 | -5 to +5 (equal) | 12 | [docs](docs/market_monitor_v1_0.md) |
+| [market_monitor_v1_0.pine](market_monitor/market_monitor_1min_v1_0.pine) | General Purpose | v1.0 | -5 to +5 (equal) | 12 | [docs](docs/market_monitor_1min_v1_0.md) |
 | [market_monitor_5min_v1_0.pine](market_monitor/market_monitor_5min_v1_0.pine) | 5-Minute Optimized | v1.0 | -11 to +11 (weighted) | 18 | [docs](docs/market_monitor_5min_v1_0.md) |
 
 #### Market Monitor Comparison
