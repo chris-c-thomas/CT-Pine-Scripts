@@ -288,4 +288,4 @@ Planned additions to the toolkit, roughly ordered by priority. Development order
 
 ## License
 
-MIT License. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
